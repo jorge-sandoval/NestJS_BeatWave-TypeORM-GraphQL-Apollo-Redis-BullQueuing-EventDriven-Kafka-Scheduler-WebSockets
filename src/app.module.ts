@@ -3,8 +3,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SongsModule } from './songs/songs.module';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
-
 import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { dataSource } from './db/data-source';
 
 @Module({
   imports: [
@@ -12,23 +13,11 @@ import { ConfigModule } from '@nestjs/config';
       isGlobal: true,
       envFilePath: '.env',
     }),
+    TypeOrmModule.forRoot(dataSource.options),
     SongsModule,
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-    {
-      provide: 'connection',
-      useValue: {
-        DB_TYPE: process.env.DB_TYPE,
-        DB_HOST: process.env.DB_HOST,
-        DB_PORT: process.env.DB_PORT,
-        DB_USERNAME: process.env.DB_USERNAME,
-        DB_PASSWORD: process.env.DB_PASSWORD,
-        DB_DATABASE: process.env.DB_DATABASE,
-      },
-    },
-  ],
+  providers: [AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
