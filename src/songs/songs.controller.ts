@@ -7,6 +7,7 @@ import {
   HttpStatus,
   NotFoundException,
   Param,
+  ParseIntPipe,
   Post,
   Put,
 } from '@nestjs/common';
@@ -33,9 +34,14 @@ export class SongsController {
   }
 
   @Get(':id')
-  async getById(@Param('id') id: string): Promise<Song> {
-    const songId = parseInt(id, 10);
-    const song = await this.songsService.getById(songId);
+  async getById(
+    @Param(
+      'id',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    id: number,
+  ): Promise<Song> {
+    const song = await this.songsService.getById(id);
     if (!song) {
       throw new NotFoundException(`Song with ID ${id} not found`);
     }
@@ -49,11 +55,14 @@ export class SongsController {
 
   @Put(':id')
   async update(
-    @Param('id') id: string,
+    @Param(
+      'id',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    id: number,
     @Body() updateSongDto: UpdateSongDto,
   ): Promise<Song> {
-    const songId = parseInt(id, 10);
-    const song = await this.songsService.update(songId, updateSongDto);
+    const song = await this.songsService.update(id, updateSongDto);
     if (!song) {
       throw new NotFoundException(`Song with ID ${id} not found`);
     }
@@ -61,9 +70,14 @@ export class SongsController {
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string): Promise<void> {
-    const songId = parseInt(id, 10);
-    const deleted = await this.songsService.delete(songId);
+  async delete(
+    @Param(
+      'id',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    id: number,
+  ): Promise<void> {
+    const deleted = await this.songsService.delete(id);
     if (!deleted) {
       throw new NotFoundException(`Song with ID ${id} not found`);
     }
