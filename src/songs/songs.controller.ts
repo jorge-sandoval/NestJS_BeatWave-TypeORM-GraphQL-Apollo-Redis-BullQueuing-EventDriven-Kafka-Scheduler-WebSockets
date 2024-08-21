@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
+  HttpStatus,
   NotFoundException,
   Param,
   Post,
@@ -19,7 +21,15 @@ export class SongsController {
 
   @Get()
   async getAll(): Promise<Song[]> {
-    return this.songsService.getAll();
+    try {
+      return this.songsService.getAll();
+    } catch (e) {
+      throw new HttpException(
+        'server error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+        { cause: e },
+      );
+    }
   }
 
   @Get(':id')
