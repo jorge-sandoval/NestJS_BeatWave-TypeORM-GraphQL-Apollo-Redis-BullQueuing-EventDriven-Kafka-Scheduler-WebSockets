@@ -9,7 +9,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { SongsService } from './songs.service';
-import { Song } from 'src/entities/song.entity';
+import { Song } from '../entities/song.entity';
 import { CreateSongDto } from './dto/create-song.dto';
 import { UpdateSongDto } from './dto/update-song.dto';
 
