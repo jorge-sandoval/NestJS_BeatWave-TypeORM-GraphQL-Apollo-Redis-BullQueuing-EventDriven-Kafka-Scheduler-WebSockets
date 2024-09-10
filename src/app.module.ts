@@ -6,6 +6,7 @@ import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { dataSource } from './db/data-source';
+import { PlaylistModule } from './playlists/playlists.module';
 
 @Module({
   imports: [
@@ -15,12 +16,13 @@ import { dataSource } from './db/data-source';
     }),
     TypeOrmModule.forRoot(dataSource.options),
     SongsModule,
+    PlaylistModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes('songs');
+    consumer.apply(LoggerMiddleware).forRoutes('songs', 'playlists');
   }
 }
