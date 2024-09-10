@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { dataSource } from './db/data-source';
 import { PlaylistModule } from './playlists/playlists.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -17,12 +18,13 @@ import { PlaylistModule } from './playlists/playlists.module';
     TypeOrmModule.forRoot(dataSource.options),
     SongsModule,
     PlaylistModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes('songs', 'playlists');
+    consumer.apply(LoggerMiddleware).forRoutes('songs', 'playlists', 'users');
   }
 }
