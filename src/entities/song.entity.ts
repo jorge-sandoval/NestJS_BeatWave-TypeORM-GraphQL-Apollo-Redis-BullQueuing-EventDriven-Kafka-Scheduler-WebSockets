@@ -12,11 +12,11 @@ export class Song {
   @Column('simple-array')
   artists: string[];
 
-  @Column()
-  releaseDate: string;
+  @Column('date')
+  releasedDate: Date;
 
-  @Column()
-  duration: string;
+  @Column('time')
+  duration: Date;
 
   @ManyToMany(() => Playlist, (playlist) => playlist.songs)
   playlists: Playlist[];

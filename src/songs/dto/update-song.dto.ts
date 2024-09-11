@@ -12,9 +12,9 @@ export class UpdateSongDto {
 
   @IsOptional()
   @IsDateString()
-  releaseDate?: string;
+  releaseDate?: Date;
 
   @IsOptional()
   @IsString()
-  duration?: string;
+  duration?: Date;
 }
