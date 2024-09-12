@@ -10,6 +10,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import { Playlist } from 'src/entities/playlist.entity';
 import { PaginationResult } from '@common/interfaces/pagination-result.interface';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UsersService {
@@ -62,7 +63,9 @@ export class UsersService {
     user.firstName = createUserDto.firstName;
     user.lastName = createUserDto.lastName;
     user.username = createUserDto.username;
-    user.password = createUserDto.password;
+
+    const salt = await bcrypt.genSalt();
+    user.password = await bcrypt.hash(createUserDto.password, salt);
 
     return this.usersRepository.save(user);
   }

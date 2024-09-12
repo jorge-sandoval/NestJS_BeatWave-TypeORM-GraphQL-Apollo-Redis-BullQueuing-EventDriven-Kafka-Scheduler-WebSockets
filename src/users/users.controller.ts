@@ -1,7 +1,6 @@
 import {
   Controller,
   Get,
-  Post,
   Body,
   Param,
   Delete,
@@ -10,15 +9,17 @@ import {
   ParseIntPipe,
   BadRequestException,
   Patch,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from 'src/entities/user.entity';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PaginationResult } from '@common/interfaces/pagination-result.interface';
 import { MAX_PAGE_SIZE } from '@common/constants/pagination';
+import { TransformInterceptor } from '@common/interceptors/transform.interceptor';
 
 @Controller('users')
+@UseInterceptors(new TransformInterceptor(User))
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
@@ -46,11 +47,6 @@ export class UsersController {
     @Query('includePlaylists') includePlaylists?: boolean,
   ): Promise<User> {
     return this.usersService.getById(id, includePlaylists);
-  }
-
-  @Post()
-  async create(@Body() createUserDto: CreateUserDto): Promise<User> {
-    return this.usersService.create(createUserDto);
   }
 
   @Patch(':id')
