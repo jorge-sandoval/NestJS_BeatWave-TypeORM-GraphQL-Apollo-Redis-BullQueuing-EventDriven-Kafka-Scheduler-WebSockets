@@ -58,6 +58,22 @@ export class UsersService {
     return user;
   }
 
+  async getByUsername(
+    username: string,
+    includePlaylists: boolean = false,
+  ): Promise<User> {
+    const user = await this.usersRepository.findOne({
+      where: { username },
+      relations: includePlaylists ? ['playlists'] : [],
+    });
+
+    if (!user) {
+      throw new NotFoundException(`User with username ${username} not found`);
+    }
+
+    return user;
+  }
+
   async create(createUserDto: CreateUserDto): Promise<User> {
     const user = new User();
     user.firstName = createUserDto.firstName;
