@@ -10,6 +10,7 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { PlaylistsService } from './playlists.service';
 import { Playlist } from 'src/entities/playlist.entity';
@@ -17,6 +18,7 @@ import { CreatePlaylistDto } from './dto/create-playlist.dto';
 import { UpdatePlaylistDto } from './dto/update-playlist.dto';
 import { PaginationResult } from '@common/interfaces/pagination-result.interface';
 import { MAX_PAGE_SIZE } from '@common/constants/pagination';
+import { AuthenticatedGaurd } from 'src/auth/guards/authenticated.guard';
 
 @Controller('playlists')
 export class PlaylistsController {
@@ -48,11 +50,13 @@ export class PlaylistsController {
   }
 
   @Post()
+  @UseGuards(AuthenticatedGaurd)
   async create(@Body() createSongDto: CreatePlaylistDto): Promise<Playlist> {
     return this.playlistsService.create(createSongDto);
   }
 
   @Patch(':id')
+  @UseGuards(AuthenticatedGaurd)
   async update(
     @Param(
       'id',
@@ -65,6 +69,7 @@ export class PlaylistsController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthenticatedGaurd)
   async delete(
     @Param(
       'id',

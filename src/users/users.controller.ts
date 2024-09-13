@@ -10,6 +10,7 @@ import {
   BadRequestException,
   Patch,
   UseInterceptors,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from 'src/entities/user.entity';
@@ -17,9 +18,11 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { PaginationResult } from '@common/interfaces/pagination-result.interface';
 import { MAX_PAGE_SIZE } from '@common/constants/pagination';
 import { TransformInterceptor } from '@common/interceptors/transform.interceptor';
+import { AuthenticatedGaurd } from 'src/auth/guards/authenticated.guard';
 
 @Controller('users')
 @UseInterceptors(new TransformInterceptor(User))
+@UseGuards(AuthenticatedGaurd)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
