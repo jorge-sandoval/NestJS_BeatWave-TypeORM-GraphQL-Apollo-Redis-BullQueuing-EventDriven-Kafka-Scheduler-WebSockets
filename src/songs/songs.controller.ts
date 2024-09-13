@@ -4,9 +4,7 @@ import {
   Controller,
   Delete,
   Get,
-  HttpException,
   HttpStatus,
-  NotFoundException,
   Param,
   ParseIntPipe,
   Patch,
@@ -35,15 +33,7 @@ export class SongsController {
       );
     }
 
-    try {
-      return this.songsService.getAll(page, pageSize);
-    } catch (e) {
-      throw new HttpException(
-        'server error',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-        { cause: e },
-      );
-    }
+    return this.songsService.getAll(page, pageSize);
   }
 
   @Get(':id')
@@ -53,33 +43,14 @@ export class SongsController {
       new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
     )
     id: number,
+    @Query('includeArtists') includeArtists?: boolean,
   ): Promise<Song> {
-    try {
-      const song = await this.songsService.getById(id);
-      if (!song) {
-        throw new NotFoundException(`Song with ID ${id} not found.`);
-      }
-      return song;
-    } catch (e) {
-      throw new HttpException(
-        'Server error',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-        { cause: e },
-      );
-    }
+    return this.songsService.getById(id, includeArtists);
   }
 
   @Post()
   async create(@Body() createSongDto: CreateSongDto): Promise<Song> {
-    try {
-      return await this.songsService.create(createSongDto);
-    } catch (e) {
-      throw new HttpException(
-        'server error',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-        { cause: e },
-      );
-    }
+    return this.songsService.create(createSongDto);
   }
 
   @Patch(':id')
@@ -97,19 +68,7 @@ export class SongsController {
       );
     }
 
-    try {
-      const song = await this.songsService.update(id, updateSongDto);
-      if (!song) {
-        throw new NotFoundException(`Song with ID ${id} not found`);
-      }
-      return song;
-    } catch (e) {
-      throw new HttpException(
-        'Server error',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-        { cause: e },
-      );
-    }
+    return this.songsService.update(id, updateSongDto);
   }
 
   @Delete(':id')
@@ -120,17 +79,6 @@ export class SongsController {
     )
     id: number,
   ): Promise<void> {
-    try {
-      const deleted = await this.songsService.delete(id);
-      if (!deleted) {
-        throw new NotFoundException(`Song with ID ${id} not found`);
-      }
-    } catch (e) {
-      throw new HttpException(
-        'Server error',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-        { cause: e },
-      );
-    }
+    await this.songsService.delete(id);
   }
 }

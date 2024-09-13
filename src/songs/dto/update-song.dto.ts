@@ -1,20 +1,26 @@
-import { IsArray, IsDateString, IsOptional, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsDateString,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class UpdateSongDto {
   @IsOptional()
   @IsString()
-  title?: string;
+  readonly title?: string;
 
   @IsOptional()
   @IsArray()
-  @IsString({ each: true })
-  artists?: string[];
+  @IsNumber({}, { each: true })
+  readonly artistIds: number[];
 
   @IsOptional()
   @IsDateString()
-  releaseDate?: Date;
+  readonly releaseDate?: Date;
 
   @IsOptional()
   @IsString()
-  duration?: Date;
+  readonly duration?: Date;
 }
