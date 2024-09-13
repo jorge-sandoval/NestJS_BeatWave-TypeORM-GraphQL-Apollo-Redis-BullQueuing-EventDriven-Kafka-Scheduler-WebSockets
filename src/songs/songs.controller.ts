@@ -10,6 +10,7 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { SongsService } from './songs.service';
 import { Song } from '../entities/song.entity';
@@ -17,6 +18,7 @@ import { CreateSongDto } from './dto/create-song.dto';
 import { UpdateSongDto } from './dto/update-song.dto';
 import { PaginationResult } from '@common/interfaces/pagination-result.interface';
 import { MAX_PAGE_SIZE } from '@common/constants/pagination';
+import { ArtistGuard } from 'src/auth/guards/artist.guard';
 
 @Controller('songs')
 export class SongsController {
@@ -49,11 +51,13 @@ export class SongsController {
   }
 
   @Post()
+  @UseGuards(ArtistGuard)
   async create(@Body() createSongDto: CreateSongDto): Promise<Song> {
     return this.songsService.create(createSongDto);
   }
 
   @Patch(':id')
+  @UseGuards(ArtistGuard)
   async update(
     @Param(
       'id',
@@ -72,6 +76,7 @@ export class SongsController {
   }
 
   @Delete(':id')
+  @UseGuards(ArtistGuard)
   async delete(
     @Param(
       'id',

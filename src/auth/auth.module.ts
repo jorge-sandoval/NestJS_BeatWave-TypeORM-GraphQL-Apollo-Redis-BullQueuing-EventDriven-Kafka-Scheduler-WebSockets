@@ -6,9 +6,15 @@ import { JwtModule } from '@nestjs/jwt';
 import { jwtOptions } from './jwt/jwt-options';
 import { JWTStrategy } from './jwt/jwt-strategy';
 import { PassportModule } from '@nestjs/passport';
+import { ArtistsModule } from 'src/artists/artists.module';
 
 @Module({
-  imports: [UsersModule, PassportModule, JwtModule.register(jwtOptions)],
+  imports: [
+    UsersModule,
+    ArtistsModule,
+    PassportModule,
+    JwtModule.register(jwtOptions),
+  ],
   providers: [AuthService, JWTStrategy],
   controllers: [AuthController],
   exports: [AuthService],
