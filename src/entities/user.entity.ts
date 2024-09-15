@@ -20,6 +20,13 @@ export class User {
   @Exclude()
   password: string;
 
+  @Column({ nullable: true, type: 'text' })
+  @Exclude()
+  twoFASecret: string;
+
+  @Column({ default: false, type: 'bit' })
+  enableTwoFA: boolean;
+
   @OneToMany(() => Playlist, (playlist) => playlist.user)
   playlists: Playlist[];
 }

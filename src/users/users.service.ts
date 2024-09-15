@@ -7,7 +7,7 @@ import { User } from 'src/entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
+import { In, Repository, UpdateResult } from 'typeorm';
 import { Playlist } from 'src/entities/playlist.entity';
 import { PaginationResult } from '@common/interfaces/pagination-result.interface';
 import * as bcrypt from 'bcryptjs';
@@ -130,5 +130,24 @@ export class UsersService {
       }
       throw error;
     }
+  }
+
+  async enable2FA(userId, secret: string): Promise<UpdateResult> {
+    return this.usersRepository.update(
+      { id: userId },
+      {
+        twoFASecret: secret,
+        enableTwoFA: true,
+      },
+    );
+  }
+  async disable2FA(userId: number): Promise<UpdateResult> {
+    return this.usersRepository.update(
+      { id: userId },
+      {
+        enableTwoFA: false,
+        twoFASecret: null,
+      },
+    );
   }
 }
