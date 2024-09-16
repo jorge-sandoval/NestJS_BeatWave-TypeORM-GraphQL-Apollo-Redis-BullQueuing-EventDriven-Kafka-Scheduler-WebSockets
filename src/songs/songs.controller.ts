@@ -19,7 +19,7 @@ import { UpdateSongDto } from './dto/update-song.dto';
 import { PaginationResult } from '@common/interfaces/pagination-result.interface';
 import { MAX_PAGE_SIZE } from '@common/constants/pagination';
 import { ArtistGuard } from 'src/auth/guards/artist.guard';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @Controller('songs')
 @ApiTags('Songs')
@@ -53,12 +53,14 @@ export class SongsController {
   }
 
   @Post()
+  @ApiBearerAuth('JWT-auth')
   @UseGuards(ArtistGuard)
   async create(@Body() createSongDto: CreateSongDto): Promise<Song> {
     return this.songsService.create(createSongDto);
   }
 
   @Patch(':id')
+  @ApiBearerAuth('JWT-auth')
   @UseGuards(ArtistGuard)
   async update(
     @Param(
@@ -78,6 +80,7 @@ export class SongsController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth('JWT-auth')
   @UseGuards(ArtistGuard)
   async delete(
     @Param(

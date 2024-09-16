@@ -15,7 +15,12 @@ import { ValidateTokenDTO } from './dto/validate-token.dto';
 import { AuthService } from './auth.service';
 import { EnableTwoFA } from './types/enable-two.fa.type';
 import { AuthenticatedGaurd } from './guards/authenticated.guard';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -47,6 +52,7 @@ export class AuthController {
   }
 
   @Post('enable2fa')
+  @ApiBearerAuth('JWT-auth')
   @UseGuards(AuthenticatedGaurd)
   async enable2FA(
     @Request()
@@ -56,6 +62,7 @@ export class AuthController {
   }
 
   @Post('validate2fa')
+  @ApiBearerAuth('JWT-auth')
   @UseGuards(AuthenticatedGaurd)
   validate2FA(
     @Request()
@@ -70,6 +77,7 @@ export class AuthController {
   }
 
   @Post('disable2fa')
+  @ApiBearerAuth('JWT-auth')
   @UseGuards(AuthenticatedGaurd)
   disable2FA(
     @Request()

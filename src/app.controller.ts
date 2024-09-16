@@ -10,7 +10,7 @@ import { AuthenticatedGaurd } from './auth/guards/authenticated.guard';
 import { ApiKeyGuard } from './auth/guards/api-key.guard';
 import { TransformInterceptor } from '@common/interceptors/transform.interceptor';
 import { User } from '@entities/user.entity';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @Controller()
 @ApiTags('Demo')
@@ -18,18 +18,20 @@ import { ApiTags } from '@nestjs/swagger';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
+  @Get('hello')
   getHello(): string {
     return this.appService.getHello();
   }
 
   @Get('profile')
+  @ApiBearerAuth('JWT-auth')
   @UseGuards(AuthenticatedGaurd)
   getProfile(@Req() request) {
     return request.user;
   }
 
   @Get('apiprofile')
+  @ApiBearerAuth('API-Key-auth')
   @UseGuards(ApiKeyGuard)
   getProfileWithApiKey(
     @Req()

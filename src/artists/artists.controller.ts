@@ -16,7 +16,7 @@ import { Artist } from '@entities/artist.entity';
 import { CreateArtistDto } from './dto/create-artist';
 import { UpdateArtistDto } from './dto/update-artist';
 import { AuthenticatedGaurd } from 'src/auth/guards/authenticated.guard';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @Controller('artists')
 @ApiTags('Artists')
@@ -35,12 +35,14 @@ export class ArtistsController {
   }
 
   @Post()
+  @ApiBearerAuth('JWT-auth')
   @UseGuards(AuthenticatedGaurd)
   async create(@Body() createArtistDto: CreateArtistDto): Promise<Artist> {
     return this.artistService.create(createArtistDto);
   }
 
   @Patch(':id')
+  @ApiBearerAuth('JWT-auth')
   @UseGuards(AuthenticatedGaurd)
   async update(
     @Param(
@@ -60,6 +62,7 @@ export class ArtistsController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth('JWT-auth')
   @UseGuards(AuthenticatedGaurd)
   async delete(
     @Param(

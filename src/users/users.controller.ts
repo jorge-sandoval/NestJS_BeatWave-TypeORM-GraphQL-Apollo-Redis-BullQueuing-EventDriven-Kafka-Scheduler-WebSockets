@@ -19,7 +19,7 @@ import { PaginationResult } from '@common/interfaces/pagination-result.interface
 import { MAX_PAGE_SIZE } from '@common/constants/pagination';
 import { TransformInterceptor } from '@common/interceptors/transform.interceptor';
 import { AuthenticatedGaurd } from 'src/auth/guards/authenticated.guard';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @Controller('users')
 @ApiTags('Users')
@@ -55,6 +55,7 @@ export class UsersController {
   }
 
   @Patch(':id')
+  @ApiBearerAuth('JWT-auth')
   async update(
     @Param(
       'id',
@@ -67,6 +68,7 @@ export class UsersController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth('JWT-auth')
   async delete(
     @Param(
       'id',
