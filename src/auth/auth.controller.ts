@@ -15,8 +15,10 @@ import { ValidateTokenDTO } from './dto/validate-token.dto';
 import { AuthService } from './auth.service';
 import { EnableTwoFA } from './types/enable-two.fa.type';
 import { AuthenticatedGaurd } from './guards/authenticated.guard';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('auth')
+@ApiTags('Auth')
 @UseInterceptors(new TransformInterceptor(User))
 export class AuthController {
   constructor(
@@ -25,6 +27,13 @@ export class AuthController {
   ) {}
 
   @Post('signup')
+  @ApiOperation({
+    summary: 'Register new user',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'It will return the user in the response',
+  })
   async signup(@Body() createUserDto: CreateUserDto): Promise<User> {
     return this.usersService.create(createUserDto);
   }

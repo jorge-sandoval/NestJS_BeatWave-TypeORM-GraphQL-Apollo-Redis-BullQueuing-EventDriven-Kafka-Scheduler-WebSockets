@@ -19,8 +19,10 @@ import { UpdateSongDto } from './dto/update-song.dto';
 import { PaginationResult } from '@common/interfaces/pagination-result.interface';
 import { MAX_PAGE_SIZE } from '@common/constants/pagination';
 import { ArtistGuard } from 'src/auth/guards/artist.guard';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('songs')
+@ApiTags('Songs')
 export class SongsController {
   constructor(private readonly songsService: SongsService) {}
 

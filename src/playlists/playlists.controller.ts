@@ -19,8 +19,10 @@ import { UpdatePlaylistDto } from './dto/update-playlist.dto';
 import { PaginationResult } from '@common/interfaces/pagination-result.interface';
 import { MAX_PAGE_SIZE } from '@common/constants/pagination';
 import { AuthenticatedGaurd } from 'src/auth/guards/authenticated.guard';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('playlists')
+@ApiTags('Playlists')
 export class PlaylistsController {
   constructor(private readonly playlistsService: PlaylistsService) {}
 

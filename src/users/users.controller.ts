@@ -19,8 +19,10 @@ import { PaginationResult } from '@common/interfaces/pagination-result.interface
 import { MAX_PAGE_SIZE } from '@common/constants/pagination';
 import { TransformInterceptor } from '@common/interceptors/transform.interceptor';
 import { AuthenticatedGaurd } from 'src/auth/guards/authenticated.guard';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('users')
+@ApiTags('Users')
 @UseInterceptors(new TransformInterceptor(User))
 @UseGuards(AuthenticatedGaurd)
 export class UsersController {

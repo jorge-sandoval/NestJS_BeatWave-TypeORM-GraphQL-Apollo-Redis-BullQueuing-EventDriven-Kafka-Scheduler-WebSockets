@@ -2,7 +2,6 @@ import {
   Controller,
   Get,
   Post,
-  Put,
   Delete,
   Param,
   Body,
@@ -10,14 +9,17 @@ import {
   ParseIntPipe,
   BadRequestException,
   UseGuards,
+  Patch,
 } from '@nestjs/common';
 import { ArtistsService } from './artists.service';
 import { Artist } from '@entities/artist.entity';
 import { CreateArtistDto } from './dto/create-artist';
 import { UpdateArtistDto } from './dto/update-artist';
 import { AuthenticatedGaurd } from 'src/auth/guards/authenticated.guard';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('artists')
+@ApiTags('Artists')
 export class ArtistsController {
   constructor(private readonly artistService: ArtistsService) {}
 
@@ -38,7 +40,7 @@ export class ArtistsController {
     return this.artistService.create(createArtistDto);
   }
 
-  @Put(':id')
+  @Patch(':id')
   @UseGuards(AuthenticatedGaurd)
   async update(
     @Param(
