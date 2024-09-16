@@ -10,6 +10,7 @@ import { PlaylistModule } from './playlists/playlists.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ArtistsModule } from './artists/artists.module';
+import { SeedsModule } from './seeds/seeds.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { ArtistsModule } from './artists/artists.module';
     UsersModule,
     AuthModule,
     ArtistsModule,
+    SeedsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
