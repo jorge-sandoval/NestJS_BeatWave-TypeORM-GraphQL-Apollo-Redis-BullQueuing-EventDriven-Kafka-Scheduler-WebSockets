@@ -1,5 +1,6 @@
 import { DataSource, DataSourceOptions } from 'typeorm';
 import * as dotenv from 'dotenv';
+import { entities } from '@entities/index';
 
 dotenv.config();
 
@@ -14,7 +15,10 @@ export const dataSourceOptions: DataSourceOptions = {
     trustServerCertificate: true,
     encrypt: false,
   },
-  entities: ['dist/**/*entity.js'],
+  entities:
+    process.env.ENVIRONMENT === 'production'
+      ? ['dist/**/*entity.js']
+      : entities,
   migrations: ['dist/db/migrations/*.js'],
   synchronize: false,
 };
