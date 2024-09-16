@@ -7,6 +7,7 @@ import { jwtOptions } from './jwt/jwt-options';
 import { JWTStrategy } from './jwt/jwt-strategy';
 import { PassportModule } from '@nestjs/passport';
 import { ArtistsModule } from 'src/artists/artists.module';
+import { ApiKeyStrategy } from './apiKey/api-key.strategy';
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { ArtistsModule } from 'src/artists/artists.module';
     PassportModule,
     JwtModule.register(jwtOptions),
   ],
-  providers: [AuthService, JWTStrategy],
+  providers: [AuthService, JWTStrategy, ApiKeyStrategy],
   controllers: [AuthController],
   exports: [AuthService],
 })

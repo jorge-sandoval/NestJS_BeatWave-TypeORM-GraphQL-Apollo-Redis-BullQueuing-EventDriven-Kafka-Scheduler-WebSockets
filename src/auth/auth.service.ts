@@ -10,6 +10,7 @@ import * as bcrypt from 'bcryptjs';
 import { ArtistsService } from 'src/artists/artists.service';
 import * as speakeasy from 'speakeasy';
 import { EnableTwoFA } from './types/enable-two.fa.type';
+import { User } from '@entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -102,5 +103,9 @@ export class AuthService {
     } catch {
       throw new UnauthorizedException('Error verifying token');
     }
+  }
+
+  async validateUserByApiKey(apiKey: string): Promise<User> {
+    return this.userService.getByApiKey(apiKey);
   }
 }

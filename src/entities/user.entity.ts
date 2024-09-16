@@ -27,6 +27,10 @@ export class User {
   @Column({ default: false, type: 'bit' })
   enableTwoFA: boolean;
 
+  @Column({ nullable: true })
+  @Exclude()
+  apiKey: string;
+
   @OneToMany(() => Playlist, (playlist) => playlist.user)
   playlists: Playlist[];
 }

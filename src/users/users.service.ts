@@ -10,6 +10,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository, UpdateResult } from 'typeorm';
 import { Playlist } from 'src/entities/playlist.entity';
 import { PaginationResult } from '@common/interfaces/pagination-result.interface';
+import { v4 as uuid4 } from 'uuid';
 import * as bcrypt from 'bcryptjs';
 
 @Injectable()
@@ -74,6 +75,10 @@ export class UsersService {
     return user;
   }
 
+  async getByApiKey(apiKey: string): Promise<User> {
+    return this.usersRepository.findOneBy({ apiKey });
+  }
+
   async create(createUserDto: CreateUserDto): Promise<User> {
     const user = new User();
     user.firstName = createUserDto.firstName;
@@ -82,6 +87,7 @@ export class UsersService {
 
     const salt = await bcrypt.genSalt();
     user.password = await bcrypt.hash(createUserDto.password, salt);
+    user.apiKey = createUserDto.apiKey === true ? uuid4() : null;
 
     return this.usersRepository.save(user);
   }
