@@ -11,6 +11,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ArtistsModule } from './artists/artists.module';
 import { SeedsModule } from './seeds/seeds.module';
+import { EventsModule } from './events/events.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { SeedsModule } from './seeds/seeds.module';
     AuthModule,
     ArtistsModule,
     SeedsModule,
+    EventsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
