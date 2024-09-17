@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Song } from 'src/entities/song.entity';
+import { Artist } from '@entities/artist.entity';
+import { Song } from '@entities/song.entity';
 import { CreateSongDto } from './dto/create-song.dto';
 import { UpdateSongDto } from './dto/update-song.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import { PaginationResult } from '@common/interfaces/pagination-result.interface';
-import { Artist } from '@entities/artist.entity';
 
 @Injectable()
 export class SongsService {
