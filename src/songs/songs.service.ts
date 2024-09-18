@@ -59,7 +59,7 @@ export class SongsService {
     const song = new Song();
     song.title = createSongDto.title;
     song.duration = createSongDto.duration;
-    song.releasedDate = createSongDto.releaseDate;
+    song.releasedDate = createSongDto.releasedDate;
 
     if (createSongDto.artistIds) {
       const playlists = await this.artistsRepository.find({
@@ -83,7 +83,7 @@ export class SongsService {
 
     song.title = updateSongDto.title ?? song.title;
     song.duration = updateSongDto.duration ?? song.duration;
-    song.releasedDate = updateSongDto.releaseDate ?? song.releasedDate;
+    song.releasedDate = updateSongDto.releasedDate ?? song.releasedDate;
 
     if (updateSongDto.artistIds) {
       const playlists = await this.artistsRepository.find({

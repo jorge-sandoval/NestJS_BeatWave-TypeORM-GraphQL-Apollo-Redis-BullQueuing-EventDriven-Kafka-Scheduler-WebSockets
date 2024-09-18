@@ -18,7 +18,7 @@ export class UpdateSongDto {
 
   @IsOptional()
   @IsDateString()
-  readonly releaseDate?: Date;
+  readonly releasedDate?: Date;
 
   @IsOptional()
   @IsString()
