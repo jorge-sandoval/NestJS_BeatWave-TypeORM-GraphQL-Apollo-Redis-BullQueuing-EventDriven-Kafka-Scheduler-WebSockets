@@ -1,0 +1,31 @@
+type Song {
+  id: ID!
+  title: String
+  releaseDate: String
+  duration: String
+}
+
+type Query {
+  songs(page: Int!, pageSize: Int!): [Song!]!
+  song(id: ID!): Song!
+}
+
+type Mutation {
+  createSong(createSongInput: CreateSongInput!): Song!
+  updateSong(id: ID!, updateSongInput: UpdateSongInput!): Song!
+  deleteSong(id: ID!): Boolean!
+}
+
+input CreateSongInput {
+  title: String!
+  artistIds: [ID!]!
+  releasedDate: String!
+  duration: String!
+}
+
+input UpdateSongInput {
+  title: String
+  artistIds: [ID!]
+  releasedDate: String
+  duration: String
+}

@@ -12,6 +12,9 @@ import { AuthModule } from './auth/auth.module';
 import { ArtistsModule } from './artists/artists.module';
 import { SeedsModule } from './seeds/seeds.module';
 import { EventsModule } from './events/events.module';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -20,6 +23,14 @@ import { EventsModule } from './events/events.module';
       envFilePath: '.env',
     }),
     TypeOrmModule.forRoot(dataSource.options),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      typePaths: ['./**/*.graphql'],
+      definitions: {
+        path: join(process.cwd(), 'src/graphql.ts'),
+        outputAs: 'class',
+      },
+    }),
     SongsModule,
     PlaylistModule,
     UsersModule,
