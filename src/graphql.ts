@@ -8,6 +8,18 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export class SignupInput {
+    firstName: string;
+    lastName: string;
+    username: string;
+    password: string;
+}
+
+export class LoginInput {
+    username: string;
+    password: string;
+}
+
 export class CreateSongInput {
     title: string;
     artistIds: string[];
@@ -22,25 +34,45 @@ export class UpdateSongInput {
     duration?: Nullable<string>;
 }
 
-export class Song {
+export class User {
     id: string;
-    title?: Nullable<string>;
-    releaseDate?: Nullable<string>;
-    duration?: Nullable<string>;
+    firstName: string;
+    lastName: string;
+    username: string;
+    password: string;
 }
 
 export abstract class IQuery {
+    abstract login(loginInput: LoginInput): LoginResponse | Promise<LoginResponse>;
+
     abstract songs(page: number, pageSize: number): Song[] | Promise<Song[]>;
 
     abstract song(id: string): Song | Promise<Song>;
 }
 
 export abstract class IMutation {
+    abstract signup(signupInput: SignupInput): SignupResponse | Promise<SignupResponse>;
+
     abstract createSong(createSongInput: CreateSongInput): Song | Promise<Song>;
 
     abstract updateSong(id: string, updateSongInput: UpdateSongInput): Song | Promise<Song>;
 
     abstract deleteSong(id: string): boolean | Promise<boolean>;
+}
+
+export class SignupResponse {
+    username: string;
+}
+
+export class LoginResponse {
+    accessToken: string;
+}
+
+export class Song {
+    id: string;
+    title?: Nullable<string>;
+    releaseDate?: Nullable<string>;
+    duration?: Nullable<string>;
 }
 
 type Nullable<T> = T | null;

@@ -11,6 +11,8 @@ import { ArtistsService } from 'src/artists/artists.service';
 import * as speakeasy from 'speakeasy';
 import { EnableTwoFA } from './types/enable-two.fa.type';
 import { User } from '@entities/user.entity';
+import { LoginSuccessDto } from './dto/login-success.dto';
+import { Login2FADto } from './dto/login-2fa.dto';
 
 @Injectable()
 export class AuthService {
@@ -20,11 +22,7 @@ export class AuthService {
     private artistsService: ArtistsService,
   ) {}
 
-  async login(
-    loginDTO: LoginDTO,
-  ): Promise<
-    { accessToken: string } | { validate2FA: string; message: string }
-  > {
+  async login(loginDTO: LoginDTO): Promise<LoginSuccessDto | Login2FADto> {
     const user = await this.userService.getByUsername(loginDTO.username);
 
     const passwordMatched = await bcrypt.compare(
