@@ -31,6 +31,7 @@ import { join } from 'path';
         outputAs: 'class',
       },
       context: ({ req }) => ({ req }),
+      installSubscriptionHandlers: true,
     }),
     SongsModule,
     PlaylistModule,

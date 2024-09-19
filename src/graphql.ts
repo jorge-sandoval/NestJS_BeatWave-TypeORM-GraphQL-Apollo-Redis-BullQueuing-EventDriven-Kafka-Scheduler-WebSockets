@@ -75,4 +75,8 @@ export class Song {
     duration?: Nullable<string>;
 }
 
+export abstract class ISubscription {
+    abstract songCreated(): Song | Promise<Song>;
+}
+
 type Nullable<T> = T | null;

@@ -16,6 +16,10 @@ type Mutation {
   deleteSong(id: ID!): Boolean!
 }
 
+type Subscription {
+  songCreated: Song!
+}
+
 input CreateSongInput {
   title: String!
   artistIds: [ID!]!

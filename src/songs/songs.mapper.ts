@@ -13,7 +13,7 @@ export class SongMapper {
       title: createSongInput.title,
       artistIds: createSongInput.artistIds.map((id) => parseInt(id, 10)),
       releasedDate: new Date(createSongInput.releasedDate),
-      duration: new Date(createSongInput.duration),
+      duration: SongMapper.parseDuration(createSongInput.duration),
     };
   }
 
@@ -25,7 +25,7 @@ export class SongMapper {
         ? new Date(updateSongInput.releasedDate)
         : undefined,
       duration: updateSongInput.duration
-        ? new Date(updateSongInput.duration)
+        ? SongMapper.parseDuration(updateSongInput.duration)
         : undefined,
     };
   }
@@ -52,5 +52,30 @@ export class SongMapper {
     song.releasedDate = new Date(graphqlSong.releaseDate);
     song.duration = new Date(graphqlSong.duration);
     return song;
+  }
+
+  static parseDuration(durationString: string): Date {
+    const durationParts = durationString.split(':');
+    let hours = 0;
+    let minutes = 0;
+    let seconds = 0;
+
+    if (durationParts.length === 3) {
+      hours = parseInt(durationParts[0], 10);
+      minutes = parseInt(durationParts[1], 10);
+      seconds = parseInt(durationParts[2], 10);
+    } else if (durationParts.length === 2) {
+      minutes = parseInt(durationParts[0], 10);
+      seconds = parseInt(durationParts[1], 10);
+    } else {
+      throw new Error('Formato de duración no válido');
+    }
+
+    const duration = new Date();
+    duration.setHours(hours);
+    duration.setMinutes(minutes);
+    duration.setSeconds(seconds);
+
+    return duration;
   }
 }
