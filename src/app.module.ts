@@ -15,6 +15,8 @@ import { EventsModule } from './events/events.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
+import { ApolloServerPluginCacheControl } from '@apollo/server/plugin/cacheControl';
+import responseCachePlugin from '@apollo/server-plugin-response-cache';
 
 @Module({
   imports: [
@@ -24,6 +26,10 @@ import { join } from 'path';
     }),
     TypeOrmModule.forRoot(dataSource.options),
     GraphQLModule.forRoot<ApolloDriverConfig>({
+      plugins: [
+        ApolloServerPluginCacheControl({ defaultMaxAge: 5 }),
+        responseCachePlugin(),
+      ],
       driver: ApolloDriver,
       typePaths: ['./**/*.graphql'],
       definitions: {

@@ -1,6 +1,17 @@
-type Song {
+enum CacheControlScope {
+  PUBLIC
+  PRIVATE
+}
+
+directive @cacheControl(
+  maxAge: Int
+  scope: CacheControlScope
+  inheritMaxAge: Boolean
+) on FIELD_DEFINITION | OBJECT | INTERFACE | UNION
+
+type Song @cacheControl(maxAge: 240) {
   id: ID!
-  title: String
+  title: String @cacheControl(maxAge: 30)
   releaseDate: String
   duration: String
 }

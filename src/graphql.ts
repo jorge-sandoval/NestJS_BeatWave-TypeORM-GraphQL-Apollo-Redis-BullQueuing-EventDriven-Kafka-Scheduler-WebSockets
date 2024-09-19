@@ -8,6 +8,11 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export enum CacheControlScope {
+    PUBLIC = "PUBLIC",
+    PRIVATE = "PRIVATE"
+}
+
 export class SignupInput {
     firstName: string;
     lastName: string;
