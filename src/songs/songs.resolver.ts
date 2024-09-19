@@ -6,6 +6,8 @@ import {
 } from 'src/graphql';
 import { SongsService } from './songs.service';
 import { SongMapper } from './songs.mapper';
+import { GraphQLAuthGaurd } from 'src/auth/guards/graphql-auth.guard';
+import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => GraphQLSong)
 export class SongsResolver {
@@ -27,6 +29,7 @@ export class SongsResolver {
   }
 
   @Mutation(() => GraphQLSong)
+  @UseGuards(GraphQLAuthGaurd)
   async createSong(
     @Args('createSongInput') createSongInput: CreateSongInput,
   ): Promise<GraphQLSong> {
@@ -36,6 +39,7 @@ export class SongsResolver {
   }
 
   @Mutation(() => GraphQLSong)
+  @UseGuards(GraphQLAuthGaurd)
   async updateSong(
     @Args('id') id: string,
     @Args('updateSongInput') updateSongInput: UpdateSongInput,
@@ -48,6 +52,7 @@ export class SongsResolver {
     return SongMapper.toGraphQLSong(updatedSong);
   }
 
+  @UseGuards(GraphQLAuthGaurd)
   @Mutation(() => Boolean)
   async deleteSong(@Args('id') id: string): Promise<boolean> {
     await this.songService.delete(Number(id));
