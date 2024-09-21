@@ -20,6 +20,7 @@ import responseCachePlugin from '@apollo/server-plugin-response-cache';
 import { TaskModule } from './tasks/tasks.module';
 import { AudioModule } from './audio/audio.module';
 import { BullModule } from '@nestjs/bull';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { BullModule } from '@nestjs/bull';
       installSubscriptionHandlers: true,
     }),
     BullModule.forRoot({ redis: { host: 'localhost', port: 6379 } }),
+    EventEmitterModule.forRoot(),
     SongsModule,
     PlaylistModule,
     UsersModule,
