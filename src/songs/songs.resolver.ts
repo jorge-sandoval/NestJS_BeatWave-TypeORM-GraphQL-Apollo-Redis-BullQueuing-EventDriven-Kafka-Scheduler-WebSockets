@@ -16,6 +16,7 @@ import { SongMapper } from './songs.mapper';
 import { GraphQLAuthGaurd } from 'src/auth/guards/graphql-auth.guard';
 import { UseGuards } from '@nestjs/common';
 import { PubSub } from 'graphql-subscriptions';
+import { GqlHeader } from 'src/decorators/gql-header.decorator';
 
 const pubSub = new PubSub();
 
@@ -57,7 +58,10 @@ export class SongsResolver {
   async updateSong(
     @Args('id') id: string,
     @Args('updateSongInput') updateSongInput: UpdateSongInput,
+    @GqlHeader('user-agent') userAgent: string,
   ): Promise<GraphQLSong> {
+    console.info(`User-Agent: ${userAgent}`);
+
     const updateSongDto = SongMapper.toUpdateSongDto(updateSongInput);
     const updatedSong = await this.songService.update(
       Number(id),

@@ -20,6 +20,7 @@ import { PaginationResult } from '@common/interfaces/pagination-result.interface
 import { MAX_PAGE_SIZE } from '@common/constants/pagination';
 import { ArtistGuard } from 'src/auth/guards/artist.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { UserId } from 'src/decorators/user-id.decorator';
 
 @Controller('songs')
 @ApiTags('Songs')
@@ -69,7 +70,10 @@ export class SongsController {
     )
     id: number,
     @Body() updateSongDto: UpdateSongDto,
+    @UserId() userId: number,
   ): Promise<Song> {
+    console.log('userId from decorator: ', userId);
+
     if (Object.keys(updateSongDto).length === 0) {
       throw new BadRequestException(
         'At least one field must be provided to update',
