@@ -18,6 +18,8 @@ import { join } from 'path';
 import { ApolloServerPluginCacheControl } from '@apollo/server/plugin/cacheControl';
 import responseCachePlugin from '@apollo/server-plugin-response-cache';
 import { TaskModule } from './tasks/tasks.module';
+import { AudioModule } from './audio/audio.module';
+import { BullModule } from '@nestjs/bull';
 
 @Module({
   imports: [
@@ -40,6 +42,7 @@ import { TaskModule } from './tasks/tasks.module';
       context: ({ req }) => ({ req }),
       installSubscriptionHandlers: true,
     }),
+    BullModule.forRoot({ redis: { host: 'localhost', port: 6379 } }),
     SongsModule,
     PlaylistModule,
     UsersModule,
@@ -48,6 +51,7 @@ import { TaskModule } from './tasks/tasks.module';
     SeedsModule,
     EventsModule,
     TaskModule,
+    AudioModule,
   ],
   controllers: [AppController],
   providers: [AppService],
