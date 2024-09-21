@@ -13,7 +13,13 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiConsumes,
+  ApiParam,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 import { createReadStream, existsSync } from 'fs';
 import { diskStorage } from 'multer';
 import { join } from 'path';
@@ -34,6 +40,18 @@ export class FileController {
       }),
     }),
   )
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
   uploadFile(@UploadedFile() file: Express.Multer.File) {
     console.log(file);
     return {
@@ -52,6 +70,18 @@ export class FileController {
       }),
     }),
   )
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
   uploadPngFile(
     @UploadedFile(
       new ParseFilePipeBuilder()
@@ -71,6 +101,20 @@ export class FileController {
   }
 
   @Get('download/:filename')
+  @ApiParam({
+    name: 'filename',
+    required: true,
+    description: 'Name of the file to download',
+    type: String,
+  })
+  @ApiQuery({
+    name: 'disposition',
+    required: false,
+    description:
+      'Especify how the file should be treated "inline" to display it "attachment" to download it',
+    type: String,
+    enum: ['inline', 'attachment'],
+  })
   downloadFile(
     @Param('filename') filename: string,
     @Query('disposition') disposition: string = 'attachment',
