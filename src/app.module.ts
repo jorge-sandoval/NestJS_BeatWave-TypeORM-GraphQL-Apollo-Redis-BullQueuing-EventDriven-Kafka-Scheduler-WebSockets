@@ -21,6 +21,7 @@ import { TaskModule } from './tasks/tasks.module';
 import { AudioModule } from './audio/audio.module';
 import { BullModule } from '@nestjs/bull';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { FileModule } from './file/file.module';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     EventsModule,
     TaskModule,
     AudioModule,
+    FileModule,
   ],
   controllers: [AppController],
   providers: [AppService],

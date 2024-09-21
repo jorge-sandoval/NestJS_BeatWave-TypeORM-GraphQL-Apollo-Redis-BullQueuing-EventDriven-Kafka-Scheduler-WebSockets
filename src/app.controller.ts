@@ -1,11 +1,7 @@
 import {
   Controller,
   Get,
-  HttpStatus,
-  ParseFilePipeBuilder,
-  Post,
   Req,
-  UploadedFile,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -15,8 +11,6 @@ import { ApiKeyGuard } from './auth/guards/api-key.guard';
 import { TransformInterceptor } from '@common/interceptors/transform.interceptor';
 import { User } from '@entities/user.entity';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
 
 @Controller()
 @ApiTags('Demo')
@@ -44,52 +38,5 @@ export class AppController {
     request,
   ) {
     return request.user;
-  }
-
-  @Post('upload')
-  @UseInterceptors(
-    FileInterceptor('file', {
-      storage: diskStorage({
-        destination: './upload/files',
-        filename: (req, file, cb) => {
-          cb(null, file.originalname);
-        },
-      }),
-    }),
-  )
-  uploadFile(@UploadedFile() file: Express.Multer.File) {
-    console.log(file);
-    return {
-      messge: 'file uploaded successfully!',
-    };
-  }
-
-  @Post('upload-png')
-  @UseInterceptors(
-    FileInterceptor('file', {
-      storage: diskStorage({
-        destination: './upload/files',
-        filename: (req, file, cb) => {
-          cb(null, file.originalname);
-        },
-      }),
-    }),
-  )
-  uploadPngFile(
-    @UploadedFile(
-      new ParseFilePipeBuilder()
-        .addFileTypeValidator({
-          fileType: 'png',
-        })
-        .build({
-          errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
-        }),
-    )
-    file: Express.Multer.File,
-  ) {
-    console.log(file);
-    return {
-      messge: 'file uploaded successfully!',
-    };
   }
 }
