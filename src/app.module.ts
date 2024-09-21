@@ -17,6 +17,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { ApolloServerPluginCacheControl } from '@apollo/server/plugin/cacheControl';
 import responseCachePlugin from '@apollo/server-plugin-response-cache';
+import { TaskModule } from './tasks/tasks.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import responseCachePlugin from '@apollo/server-plugin-response-cache';
     ArtistsModule,
     SeedsModule,
     EventsModule,
+    TaskModule,
   ],
   controllers: [AppController],
   providers: [AppService],
