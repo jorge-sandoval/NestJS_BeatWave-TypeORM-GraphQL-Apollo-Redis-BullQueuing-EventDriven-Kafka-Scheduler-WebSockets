@@ -70,7 +70,7 @@ export class SongsController {
     )
     id: number,
     @Body() updateSongDto: UpdateSongDto,
-    @UserId() userId: number,
+    @UserId() userId: number = null,
   ): Promise<Song> {
     console.log('userId from decorator: ', userId);
 
