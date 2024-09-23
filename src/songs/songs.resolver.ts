@@ -35,7 +35,7 @@ export class SongsResolver {
 
   @Query(() => GraphQLSong)
   async song(@Args('id') id: number): Promise<GraphQLSong> {
-    const song = await this.songService.getById(Number(id));
+    const song = await this.songService.getById(id);
     return SongMapper.toGraphQLSong(song);
   }
 
