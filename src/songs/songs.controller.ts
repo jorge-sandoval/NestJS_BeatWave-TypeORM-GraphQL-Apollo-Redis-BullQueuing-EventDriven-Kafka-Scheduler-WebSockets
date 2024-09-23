@@ -29,8 +29,16 @@ export class SongsController {
 
   @Get()
   async getAll(
-    @Query('page') page: number = 1,
-    @Query('pageSize') pageSize: number = 10,
+    @Query(
+      'page',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    page: number = 1,
+    @Query(
+      'pageSize',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    pageSize: number = 10,
   ): Promise<PaginationResult<Song>> {
     if (pageSize > MAX_PAGE_SIZE) {
       throw new BadRequestException(

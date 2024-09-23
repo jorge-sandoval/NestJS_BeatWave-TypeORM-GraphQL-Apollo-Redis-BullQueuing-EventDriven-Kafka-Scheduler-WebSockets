@@ -10,5 +10,6 @@ import { SongsResolver } from './songs.resolver';
   imports: [TypeOrmModule.forFeature([Song, Artist])],
   controllers: [SongsController],
   providers: [SongsService, SongsResolver],
+  exports: [SongsService],
 })
 export class SongsModule {}

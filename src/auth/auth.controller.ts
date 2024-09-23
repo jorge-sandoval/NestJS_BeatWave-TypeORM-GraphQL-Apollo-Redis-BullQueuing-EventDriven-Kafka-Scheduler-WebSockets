@@ -1,6 +1,8 @@
 import {
   Body,
   Controller,
+  HttpCode,
+  HttpStatus,
   Post,
   Request,
   UseGuards,
@@ -44,6 +46,9 @@ export class AuthController {
   }
 
   @Post('login')
+  @ApiResponse({ status: 200, description: 'User successfully logged in.' }) // Cambia a 200 OK
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @HttpCode(HttpStatus.OK)
   login(
     @Body()
     loginDTO: LoginDTO,
