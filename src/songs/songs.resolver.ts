@@ -34,7 +34,7 @@ export class SongsResolver {
   }
 
   @Query(() => GraphQLSong)
-  async song(@Args('id') id: string): Promise<GraphQLSong> {
+  async song(@Args('id') id: number): Promise<GraphQLSong> {
     const song = await this.songService.getById(Number(id));
     return SongMapper.toGraphQLSong(song);
   }
@@ -56,24 +56,21 @@ export class SongsResolver {
   @Mutation(() => GraphQLSong)
   @UseGuards(GraphQLAuthGaurd)
   async updateSong(
-    @Args('id') id: string,
+    @Args('id') id: number,
     @Args('updateSongInput') updateSongInput: UpdateSongInput,
     @GqlHeader('user-agent') userAgent: string,
   ): Promise<GraphQLSong> {
     console.info(`User-Agent: ${userAgent}`);
 
     const updateSongDto = SongMapper.toUpdateSongDto(updateSongInput);
-    const updatedSong = await this.songService.update(
-      Number(id),
-      updateSongDto,
-    );
+    const updatedSong = await this.songService.update(id, updateSongDto);
     return SongMapper.toGraphQLSong(updatedSong);
   }
 
   @UseGuards(GraphQLAuthGaurd)
   @Mutation(() => Boolean)
-  async deleteSong(@Args('id') id: string): Promise<boolean> {
-    await this.songService.delete(Number(id));
+  async deleteSong(@Args('id') id: number): Promise<boolean> {
+    await this.songService.delete(id);
     return true;
   }
 
