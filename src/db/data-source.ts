@@ -24,3 +24,10 @@ export const dataSourceOptions: DataSourceOptions = {
 };
 
 export const dataSource = new DataSource(dataSourceOptions);
+
+export const dataSourceTest = new DataSource({
+  ...dataSourceOptions,
+  database: dataSourceOptions.database + 'Test',
+  synchronize: true,
+  dropSchema: true,
+});
