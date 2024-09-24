@@ -9,6 +9,7 @@ import { PassportModule } from '@nestjs/passport';
 import { ArtistsModule } from 'src/artists/artists.module';
 import { ApiKeyStrategy } from './apiKey/api-key.strategy';
 import { AuthResolver } from './auth.resolver';
+import { KafkaProducerModule } from 'src/kafka/producer/kafka.producer.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { AuthResolver } from './auth.resolver';
     ArtistsModule,
     PassportModule,
     JwtModule.register(jwtOptions),
+    KafkaProducerModule,
   ],
   providers: [AuthService, JWTStrategy, ApiKeyStrategy, AuthResolver],
   controllers: [AuthController],

@@ -22,6 +22,7 @@ import { AudioModule } from './audio/audio.module';
 import { BullModule } from '@nestjs/bull';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { FileModule } from './file/file.module';
+import { KafkaModule } from './kafka/kafka.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { FileModule } from './file/file.module';
     }),
     BullModule.forRoot({ redis: { host: 'localhost', port: 6379 } }),
     EventEmitterModule.forRoot(),
+    KafkaModule,
     SongsModule,
     PlaylistModule,
     UsersModule,

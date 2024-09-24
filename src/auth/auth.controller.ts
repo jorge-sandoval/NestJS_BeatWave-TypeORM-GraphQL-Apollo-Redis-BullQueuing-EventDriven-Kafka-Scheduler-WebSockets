@@ -23,6 +23,8 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { KafkaProducerService } from 'src/kafka/producer/kafka.producer.service';
+import { LoginSuccessDto } from './dto/login-success.dto';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -31,6 +33,7 @@ export class AuthController {
   constructor(
     private usersService: UsersService,
     private authService: AuthService,
+    private readonly kafkaProducer: KafkaProducerService,
   ) {}
 
   @Post('signup')
@@ -42,18 +45,53 @@ export class AuthController {
     description: 'It will return the user in the response',
   })
   async signup(@Body() createUserDto: CreateUserDto): Promise<User> {
-    return this.usersService.create(createUserDto);
+    try {
+      const user = await this.usersService.create(createUserDto);
+      await this.kafkaProducer.sendMessage('user-signup-events', {
+        userId: user.id,
+        username: user.username,
+        event: 'signup',
+        status: 'success',
+      });
+      return user;
+    } catch (e) {
+      await this.kafkaProducer.sendMessage('user-signup-events', {
+        username: createUserDto.username,
+        event: 'signup',
+        status: 'failed',
+      });
+      throw e;
+    }
   }
 
   @Post('login')
-  @ApiResponse({ status: 200, description: 'User successfully logged in.' }) // Cambia a 200 OK
+  @ApiResponse({ status: 200, description: 'User successfully logged in.' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @HttpCode(HttpStatus.OK)
-  login(
+  async login(
     @Body()
     loginDTO: LoginDTO,
   ) {
-    return this.authService.login(loginDTO);
+    try {
+      const response = await this.authService.login(loginDTO);
+      if ((response as LoginSuccessDto).accessToken) {
+        console.log('calling kafka');
+        await this.kafkaProducer.sendMessage('user-login-events', {
+          username: loginDTO.username,
+          event: 'login',
+          status: 'success',
+        });
+      }
+      console.log('returning response');
+      return response;
+    } catch (e) {
+      await this.kafkaProducer.sendMessage('user-login-events', {
+        username: loginDTO.username,
+        event: 'login',
+        status: 'failed',
+      });
+      throw e;
+    }
   }
 
   @Post('enable2fa')
